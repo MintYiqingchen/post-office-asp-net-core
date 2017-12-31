@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PostOfficeApp.Data;
 using PostOfficeApp.Models;
 using PostOfficeApp.Services;
+using PostOffice.Models;
 
 namespace PostOfficeApp
 {
@@ -27,7 +28,10 @@ namespace PostOfficeApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("MySQL")));
+            // is every table need a context ?
+            services.AddDbContext<MovieDbContext>(options => 
+                options.UseMySQL(Configuration.GetConnectionString("MySQL")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

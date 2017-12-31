@@ -33,3 +33,18 @@
         display: none;
     }
 }
+
+
+h1, h2, h3, h4, h5 {
+    margin-left: 1rem;
+}
+
+.ui.search {
+    margin: auto;
+}
+
+#top-nav {
+    border-radius: 0px;
+    padding: 0.5rem 0;
+}
+
