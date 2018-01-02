@@ -1,7 +1,8 @@
-﻿@{
+﻿@model IEnumerable<PostOffice.Models.Movie>
+@{
     ViewData["Title"] = "Home Page";
 }
-<div class="ui large borderless menu" id="top-nav">
+<div class="ui large borderless fixed menu" id="top-nav">
     <a class="item" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
     <div class="ui dropdown">
         <span class="item">订阅报刊<i class="dropdown icon"></i></span>
@@ -25,7 +26,31 @@
         @await Html.PartialAsync("_LoginPartial")
     </div>
 </div>
+<h3 id="main-title">杂志推介</h3>
 <div class="ui divided items" id="content-box">
+    @foreach (var item in Model)
+    {
+        item.Img_url = "/images/banner" + item.ID + ".svg";
+        <div class="item">
+            <div class="image"><img src="@item.Img_url" alt="" /></div>
+            <div class="content">
+                @Html.ActionLink(item.Title, "Details","Test", new { id = item.ID }, new { @class="header", target="_blank"})
+                <div class="meta">
+                    <span>@Html.DisplayNameFor(m=>m.ReleaseDate)</span>
+                </div>
+                <div><span>@Html.DisplayNameFor(m=>m.Price)</span></div>
+                <div><p>一堆假的discription</p></div>
+                <div class="extra">
+                    <div class="ui label">@item.Genre</div>
+                </div>
+                <div class="extra">
+                    <div class="ui right floated primary button">现在订阅<i class="right chevron icon"></i> </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
     <div class="item">
         <div class="image">
             <img src="">
@@ -60,6 +85,7 @@
                 <div class="ui right floated primary button">Buy tickets <i class="right chevron icon"></i> </div>
                 <div class="ui label">Limited</div>
             </div>
+
         </div>
     </div>
     <div class="item">
@@ -80,7 +106,6 @@
         </div>
     </div>
 </div>
-
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/semantic.min.js"></script>
 <script src="~/lib/angular.js"></script>

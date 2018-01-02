@@ -1,0 +1,9 @@
+﻿4.　@Html.ActionLink("linkText", "actionName", routeValues, htmlAttributes)
+
+　　htmlAttribute可以设置<a>标签的属性。
+
+　　例如，@Html.ActionLink("detail", "Detail", new{ id = 1 }, new{ target = "_blank" })会生成<a href="Products/Detail/1" target="_blank">detail</a>，需要注意的是如果写成new{ target="_blank", class="className" }则会报错，因为Class是C#的关键字，此时应该写成@class="className"。
+
+5.　@Html.ActionLink("linkText", "actionName", "controllerName", routeValues, htmlAttributes)
+@Url.Action("CCC", "Import")
+

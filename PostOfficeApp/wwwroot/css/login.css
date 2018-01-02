@@ -1,0 +1,10 @@
+﻿#loginform{
+    padding:2rem;
+    box-shadow:10px 10px 10px #ded7d7;
+    border:1px solid #808080;
+    border-radius:2rem;
+    background-color:#FFF;
+}
+body{
+    background-color:mintcream;
+}

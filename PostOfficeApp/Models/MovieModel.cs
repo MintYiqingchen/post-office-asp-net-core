@@ -12,12 +12,15 @@ namespace PostOffice.Models
         public int ID { get; set; }
         public string Title { get; set; }
 
-        [Display(Name ="Date Release")]
+        [Display(Name ="上映日期")]
         [DisplayFormat(DataFormatString ="{0:yyyy-mm-dd}",ApplyFormatInEditMode =true)]
         public DateTime ReleaseDate { get; set; }
 
         public string Genre { get; set; }
+        [Display(Name ="价格")]
         public decimal Price { get; set; }
+        
+        public string Img_url { get; set; }
     }
     public class MovieDbContext : DbContext
     {

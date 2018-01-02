@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using PostOfficeApp.Models;
+using PostOffice.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PostOfficeApp.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly MovieDbContext _context;
+        public HomeController(MovieDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        // http get
+        public async Task<IActionResult> Index()
+        {
+            /**/
+            
+            return View(await _context.Movie.ToListAsync());
         }
 
         public IActionResult About()
@@ -44,6 +54,7 @@ namespace PostOfficeApp.Controllers
             {
                 if (Regex.IsMatch(s, @"^[0-9]+-[0-9]+$"))
                 {
+                    /**/
                     returnContent = new JObject(
                         new JProperty("results",
                             new JArray(
@@ -58,6 +69,7 @@ namespace PostOfficeApp.Controllers
                     returnContent = new JObject(
                         new JProperty("results",
                             new JArray(
+                                new JObject(new JProperty("title", "test title"), new JProperty("url", "/test")),
                                 new JObject(new JProperty("title", "test title"), new JProperty("url", "/test"))
                             )
                         ));

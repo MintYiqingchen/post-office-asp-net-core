@@ -28,18 +28,30 @@ namespace PostOfficeApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MySQL")));
+                options.UseMySQL(Configuration.GetConnectionString("MySQL")));
             // is every table need a context ?
             services.AddDbContext<MovieDbContext>(options => 
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options=>
+                {
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            // add cookie services
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "postofficecookie";
+                options.Cookie.HttpOnly = true;
+            });
             services.AddMvc();
         }
 

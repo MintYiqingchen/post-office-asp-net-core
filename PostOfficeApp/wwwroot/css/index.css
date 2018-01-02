@@ -2,3 +2,8 @@
     width: 75%;
     margin: auto 1rem auto auto;
 }
+
+#main-title{
+    border-bottom-style:groove;
+    padding-top:80px;
+}
