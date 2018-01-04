@@ -1,9 +1,50 @@
 ﻿#content-box {
-    width: 75%;
-    margin: auto 1rem auto auto;
+    width: 70%;
+    margin: auto;
 }
-
 #main-title{
     border-bottom-style:groove;
     padding-top:80px;
+}
+
+.container{
+    display:flex;
+
+}
+#filter-bar{
+    position:relative;
+    left:1rem;
+    width:20%;
+    min-width:100px;
+    border-right-color:gainsboro;
+    background-color:rgba(0,0,0,0.1);
+    padding:1rem 0 0 1.3rem;
+}
+
+/* 筛选条件样式 */
+a:visited.condition, a:link.condition, a:active.condition {
+    color:white;
+}
+a:hover.condition {
+    background: white;
+    color: rgb(51, 45, 45)
+}
+.condition{
+    color:white;
+    border:1px solid white;
+    border-radius:2px;
+    padding:0.5em 0.8em;
+    margin:5px;
+    font-size:14px;
+    font-weight:600
+}
+
+.condition-grp{
+    display:flex;
+
+}
+#filter-menu .ui.sub.header{
+    color:whitesmoke;
+    margin:auto;
+    text-align:center;
 }

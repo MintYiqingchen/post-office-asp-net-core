@@ -3,8 +3,11 @@
     ViewData["Title"] = "Register";
 }
 
-<div id="backtag">
-    返回
+<div class="ui clearning segment">
+    <div id="backtag">
+        <a><i class="ui arrow left icon"></i></a>
+        <span class="ui left header">返回</span>
+    </div>
 </div>
 <h4>REGISTER</h4>
 
@@ -38,11 +41,6 @@
 <script src="~/lib/semantic.min.js"></script>
 <script src="~/lib/angular.js"></script>
 <script>
-    $('#backtag').hover(function () {
-        $(this).css('background-color', '#888888');
-    }, function () {
-        $(this).css('background-color', '#FFF');
-    });
     $('#backtag').click(function () { history.back(); });
 </script>
 @section Scripts {

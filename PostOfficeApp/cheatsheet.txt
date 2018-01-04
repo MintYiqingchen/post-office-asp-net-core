@@ -7,3 +7,7 @@
 5.　@Html.ActionLink("linkText", "actionName", "controllerName", routeValues, htmlAttributes)
 @Url.Action("CCC", "Import")
 
+【ui】容器
+A container limits content to a maximum width 
+
+6.angular通过$event.target 来获得触发时间的对象
