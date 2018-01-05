@@ -1,7 +1,37 @@
-﻿@{
-    ViewData["Title"] = "About";
+﻿@using PostOfficeApp.Controllers
+@{
+    ViewData["Title"] = "关于";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<div class="ui large borderless fixed menu" id="top-nav" style="max-height:80px">
+    <a class="item" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
+    <div class="ui dropdown item">
+        <span class="item">订阅报刊<i class="dropdown icon"></i></span>
+        <div class="menu">
+            <div class="header">种类</div>
+            @Html.ActionLink("报纸", "Items", "Home", new { k = KIND.NEWSPAPER }, new { @class = "item" })
+            @Html.ActionLink("杂志", "Items", "Home", new { k = KIND.MAGZINE }, new { @class = "item" })
+            @Html.ActionLink("所有", "Items", "Home", new { k = KIND.ALL }, new { @class = "item" })
+        </div>
+    </div>
+    <a class="item" asp-area="" asp-controller="Home" asp-action="About">关于</a>
+    <a class="item" asp-area="" asp-controller="Home" asp-action="Contact">联系我们</a>
+    <div class="right menu">
+        <div class="ui fluid search item">
+            <div class="ui icon input">
+                <input class="prompt" placeholder="可按邮发代号、报纸名称搜索" name="search" type="text" />
+                <i class="icon search"></i>
+            </div>
+        </div>
+        <div class="item">@await Html.PartialAsync("_LoginPartial")</div>
+    </div>
+</div>
+<h2 style="padding-top:80px">@ViewData["Title"]</h2>
 
-<p>Use this area to provide additional information.</p>
+<p>
+    信息与计算科学 王筱翕
+    信息与计算科学 许悦瑾
+</p>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/semantic.min.js"></script>
+<script src="~/js/topnav.js"></script>

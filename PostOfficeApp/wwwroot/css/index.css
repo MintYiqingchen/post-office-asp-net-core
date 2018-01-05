@@ -2,3 +2,7 @@
     padding-top:80px;
     border-bottom:groove;
 }
+.ui.attached.tab.segment{
+    border:unset;
+    overflow-y:scroll;
+}

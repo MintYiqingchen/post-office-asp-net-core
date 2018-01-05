@@ -1,17 +1,42 @@
-﻿@{
+﻿@using PostOfficeApp.Controllers
+@{
     ViewData["Title"] = "Contact";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<div class="ui large borderless fixed menu" id="top-nav" style="max-height:80px">
+    <a class="item" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
+    <div class="ui dropdown item">
+        <span class="item">订阅报刊<i class="dropdown icon"></i></span>
+        <div class="menu">
+            <div class="header">种类</div>
+            @Html.ActionLink("报纸", "Items", "Home", new { k = KIND.NEWSPAPER }, new { @class = "item" })
+            @Html.ActionLink("杂志", "Items", "Home", new { k = KIND.MAGZINE }, new { @class = "item" })
+            @Html.ActionLink("所有", "Items", "Home", new { k = KIND.ALL }, new { @class = "item" })
+        </div>
+    </div>
+    <a class="item" asp-area="" asp-controller="Home" asp-action="About">关于</a>
+    <a class="item" asp-area="" asp-controller="Home" asp-action="Contact">联系我们</a>
+    <div class="right menu">
+        <div class="ui fluid search item">
+            <div class="ui icon input">
+                <input class="prompt" placeholder="可按邮发代号、报纸名称搜索" name="search" type="text" />
+                <i class="icon search"></i>
+            </div>
+        </div>
+        <div class="item">@await Html.PartialAsync("_LoginPartial")</div>
+    </div>
+</div>
 
+<h3 style="padding-top:80px">一个纯凑字数的联系页面</h3">
 <address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
+    GuangZhou Province<br />
+    SYSU<br />
 </address>
 
 <address>
     <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/semantic.min.js"></script>
+<script src="~/js/topnav.js"></script>
