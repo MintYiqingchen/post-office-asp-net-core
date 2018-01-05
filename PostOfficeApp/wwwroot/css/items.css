@@ -1,0 +1,53 @@
+﻿#content-box {
+    width: 70%;
+    margin: 0 auto;
+}
+#main-title{
+    border-bottom-style:groove;
+    padding-top:80px;
+}
+
+.container{
+    display:flex;
+    align-items:flex-start;
+}
+#filter-bar{
+    position:relative;
+    left:1rem;
+    width:20%;
+    min-width:100px;
+    border-right-color:gainsboro;
+    background-color:rgba(0,0,0,0.1);
+    padding:1rem 0 0 0;
+    text-align:center;
+}
+
+/* 筛选条件样式 */
+a:visited.condition, a:link.condition, a:active.condition {
+    color:white;
+}
+a:hover.condition {
+    background: white;
+    color: rgb(51, 45, 45)
+}
+.condition{
+    color:white;
+    border:1px solid white;
+    border-radius:2px;
+    padding:0.5em 0.8em;
+    margin:5px 2px;
+    font-size:14px;
+    font-weight:600
+}
+
+.condition-grp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#filter-menu .ui.sub.header {
+    color: whitesmoke;
+    margin-top:1em;
+    text-align: center;
+    border-bottom: 1px groove rgba(255, 255, 255,0.8);
+}

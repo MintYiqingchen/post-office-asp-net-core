@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<PostOffice.Models.Movie>
+@using PostOfficeApp.Controllers
 @{
     ViewData["Title"] = "Home Page";
-    var conditions = new List<string> { "经济", "艺术" };
+    var contentCon = new List<string> { "报纸","商业/财经/营销", "教育/育儿/外语", "建筑/地理/园林" ,"时尚/娱乐/服饰",
+                                        "文体/艺术/广告", "旅游/摄影/数码", "时政/军事/资讯", "汽车/生活/百科",
+                                        "医学/美食/酒店", "电影/动漫/影视", "科技/会展/互联网"};
 }
 <div class="ui large borderless fixed menu" id="top-nav" style="max-height:80px">
     <a class="item" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
@@ -9,10 +12,9 @@
         <span class="item">订阅报刊<i class="dropdown icon"></i></span>
         <div class="menu">
             <div class="header">种类</div>
-            <a class="item">报纸</a>
-            <a class="item">出版刊物</a>
-            <a class="item">电子刊物</a>
-            <a class="item">所有</a>
+            @Html.ActionLink("报纸", "Items", "Home", new { k = KIND.NEWSPAPER }, new { @class = "item" })
+            @Html.ActionLink("杂志", "Items", "Home", new { k = KIND.MAGZINE }, new { @class = "item" })
+            @Html.ActionLink("所有", "Items", "Home", new { k = KIND.ALL }, new { @class = "item" })
         </div>
     </div>
     <a class="item" asp-area="" asp-controller="Home" asp-action="About">关于</a>
@@ -27,108 +29,19 @@
         <div class="item">@await Html.PartialAsync("_LoginPartial")</div>
     </div>
 </div>
-<h3 id="main-title">杂志推荐</h3>
+<h3 id="main-title">报刊杂志推荐</h3>
 
-<div class="container" ng-app="myApp">
-    <!--条件筛选过滤框-->
-    <div id="filter-bar" ng-controller="myFilter">
-        <div id="tags">
-            <div class="ui teal tag label">周刊<i class="delete icon"></i></div>
-            <div class="ui red tag label">经济<i class="delete icon"></i></div>
-        </div>
-        <div id="filter-menu" class="ui inverted fluid vertical menu">
-            <div class="item header">条件筛选</div>
-            <div class="ui sub header">按内容</div>
-            <div class="condition-grp">
-            
-            @foreach(var condition in conditions)
+<div class="ui grid" id="content-box">
+    <div class="four wide column">
+        <div class="ui vertical fluid tabular menu">
+            @foreach(var content in contentCon)
             {
-                <a ng-click="addCondition($event)" class="condition">@condition</a>
-
+                <a class="item">@content</a>
             }
-            </div>
         </div>
-        <button type="button" class="ui secondary button" ng-click="clearTags()">重置</button>
     </div>
-    <!--条目呈现区-->
-    <div class="ui divided items" id="content-box">
-        @foreach (var item in Model)
-        {
-            item.Img_url = "/images/banner" + item.ID + ".svg";
-            <div class="item">
-                <div class="image"><img src="@item.Img_url" alt="" /></div>
-                <div class="content">
-                    @Html.ActionLink(item.Title, "Details", "Test", new { id = item.ID }, new { @class = "header", target = "_blank" })
-                    <div class="meta">
-                        <span>@Html.DisplayNameFor(m => m.ReleaseDate) ：@item.ReleaseDate</span>
-                    </div>
-                    <div><span>@Html.DisplayNameFor(m => m.Price)：@item.Price</span></div>
-                    <div><p>一堆假的discription</p></div>
-                    <div class="extra">
-                        <div class="ui label">@item.Genre</div>
-                    </div>
-                    <div class="extra">
-                        <div class="ui right floated primary button">现在订阅<i class="right chevron icon"></i> </div>
-                    </div>
-                </div>
-            </div>
-
-        }
-
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">12 Years a Slave</a>
-                <div class="meta">
-                    <span class="cinema">Union Square 14</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui label">IMAX</div>
-                    <div class="ui label"><i class="globe icon"></i> Additional Languages</div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">My Neighbor Totoro</a>
-                <div class="meta">
-                    <span class="cinema">IFC Cinema</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui right floated primary button">Buy tickets <i class="right chevron icon"></i> </div>
-                    <div class="ui label">Limited</div>
-                </div>
-
-            </div>
-        </div>
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">Watchmen</a>
-                <div class="meta">
-                    <span class="cinema">IFC</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui right floated primary button">Buy tickets <i class="right chevron icon"></i> </div>
-                </div>
-            </div>
-        </div>
+    <div class="twelve wide stretched column">
+        <div class="ui segment">你猜</div>
     </div>
 </div>
 
@@ -137,16 +50,13 @@
 <script src="~/lib/angular.js"></script>
 <script src="~/js/topnav.js"></script>
 <script>
-    $(".ui.sticky").sticky({
-        context: '#content-box'
-    });
-    var app = angular.module("myApp", []);
-    app.controller('myFilter', function ($scope, $http) {
-        $scope.addCondition = function ($event) {
-            console.log($event.target);
-
+    $('#content-box .tabular.menu .item:first').addClass('active').addClass('teal');
+    $('#content-box .tabular.menu .item').click(function () {
+        let old = $('#content-box .tabular.menu .active.teal.item');
+        if (!$(this).is(old)) {
+            old.removeClass('active').removeClass('teal');
+            $(this).addClass('active').addClass('teal');
         }
-
     });
 </script>
 <link type="text/css" rel="stylesheet" href="~/css/index.css" />
