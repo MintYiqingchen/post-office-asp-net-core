@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using PostOfficeApp.Models;
 using PostOffice.Models;
 using Microsoft.EntityFrameworkCore;
+using PostOfficeApp.Data;
 
 namespace PostOfficeApp.Controllers
 {   
@@ -20,10 +21,10 @@ namespace PostOfficeApp.Controllers
     public class HomeController : Controller
     {
         private readonly MovieDbContext _context;
-        private readonly CustomerDbContext _context1;
+        private readonly ApplicationDbContext _context1;
         private readonly NewspaperDbContext _context2;
         private readonly OrdersDbContext _context3;
-        public HomeController(MovieDbContext context, CustomerDbContext context1, NewspaperDbContext context2, OrdersDbContext context3)
+        public HomeController(MovieDbContext context, ApplicationDbContext context1, NewspaperDbContext context2, OrdersDbContext context3)
         {
             _context = context;
             _context1 = context1;
@@ -32,10 +33,7 @@ namespace PostOfficeApp.Controllers
 
         }
 
-        public HomeController(MovieDbContext context)
-        {
-            _context = context;
-        }
+        
         // http get
         public async Task<IActionResult> Index()
         {
@@ -64,7 +62,7 @@ namespace PostOfficeApp.Controllers
         }
 
         [Route("/Home/search")]
-        public JsonResult Search(string q="",KIND k = KIND.ALL)
+        public JsonResult Search(string q="")
         {
             /*@usage: 返回走索栏需要的json结果
              * @q:搜索关键词
@@ -72,16 +70,17 @@ namespace PostOfficeApp.Controllers
              */
             JObject returnContent = new JObject();
             IEnumerable<string> keys = q.ToLower().Split();
+            List<Newspaper> newspaper_list = new List<Newspaper>();
             foreach (var s in keys)
             {
                 if (Regex.IsMatch(s, @"^[0-9]+-[0-9]+$"))
                 {
                     //根据报刊发行号搜索
+                    newspaper_list = new List<Newspaper>();
                     var query = from rows in _context2.Newspaper
                                 where rows.Pno_number == q
                                 select new
                                 {
-                                    rows.Pno,
                                     rows.Pno_number,
                                     rows.Pna,
                                     rows.Ppr,
@@ -90,13 +89,10 @@ namespace PostOfficeApp.Controllers
                                     rows.Total_sell_out,
                                     rows.Labels
                                 };
-
-                    List<Newspaper> newspaper_list = new List<Newspaper>();
                     foreach (var item in query)
                     {
                         Newspaper temp_newspaper = new Newspaper
                         {
-                            Pno = item.Pno,
                             Pno_number = item.Pno_number,
                             Pna = item.Pna,
                             Ppr = item.Ppr,
@@ -114,7 +110,12 @@ namespace PostOfficeApp.Controllers
                         new JProperty("results",
                             new JArray(
                                 //返回的url为/test/pno
-                                new JObject(new JProperty("title", newspaper_list[0].Pna), new JProperty("url", "/details/" + newspaper_list[0].Pno))
+                                from p in newspaper_list
+                                select new JObject(
+                                    new JProperty("title", p.Pna),
+                                    new JProperty("url",
+                                    System.Web.HttpUtility.UrlEncode($"Home/details/{p.Pno_number}", System.Text.Encoding.UTF8))
+                                )
                             )
                         ));
                     }
@@ -124,7 +125,7 @@ namespace PostOfficeApp.Controllers
                         new JProperty("results",
                             new JArray(
                                 //返回的url为/test/pno
-                                new JObject(new JProperty("title", "Not Found"), new JProperty("url", "/test/"))
+                                new JObject(new JProperty("title", "暂无结果"))
                             )
                         ));
                     }
@@ -134,24 +135,21 @@ namespace PostOfficeApp.Controllers
                 {
                     //根据报刊名搜索
                     var query = from rows in _context2.Newspaper
-                                where rows.Pna == q
-                                select new
-                                {
-                                    rows.Pno,
-                                    rows.Pna,
-                                    rows.Ppr,
-                                    rows.Pdw,
-                                    rows.Ptype,
-                                    rows.Total_sell_out,
-                                    rows.Labels
-                                };
+                                    where rows.Pna.Contains(q)
+                                    select new
+                                    {
+                                        rows.Pna,
+                                        rows.Ppr,
+                                        rows.Pdw,
+                                        rows.Ptype,
+                                        rows.Total_sell_out,
+                                        rows.Labels
+                                    };
 
-                    List<Newspaper> newspaper_list = new List<Newspaper>();
                     foreach (var item in query)
                     {
                         Newspaper temp_newspaper = new Newspaper
                         {
-                            Pno = item.Pno,
                             Pna = item.Pna,
                             Ppr = item.Ppr,
                             Pdw = item.Pdw,
@@ -161,30 +159,33 @@ namespace PostOfficeApp.Controllers
                         };
                         newspaper_list.Add(temp_newspaper);
                     }
-                    if (newspaper_list.Count() != 0)
-                    {
-                        returnContent = new JObject(
-                           new JProperty("results",
-                               new JArray(
-                                   new JObject(new JProperty("title", newspaper_list[0].Pna), new JProperty("url", "/details/" + newspaper_list[0].Pno))
-                               )
-                           ));
-                    }
-                    else
-                    {
-                        returnContent = new JObject(
-                           new JProperty("results",
-                               new JArray(
-                                   new JObject(new JProperty("title", "Not Found"), new JProperty("url", "/test/error"))
-                               )
-                           ));
-                    }
-                    break;
                 }
+            }
+            if (newspaper_list.Count() != 0)
+            {
+                returnContent = new JObject(
+                   new JProperty("results",
+                       new JArray(
+                           from p in newspaper_list
+                           select new JObject(
+                               new JProperty("title", p.Pna),
+                               new JProperty("url", 
+                               System.Web.HttpUtility.UrlEncode($"Home/details/{p.Pno_number}", System.Text.Encoding.UTF8))
+                           )
+                       )
+                   ));
+            }
+            else
+            {
+                returnContent = new JObject(
+                   new JProperty("results",
+                       new JArray(
+                           new JObject(new JProperty("title", "暂无结果"))
+                       )
+                   ));
             }
             return new JsonResult(returnContent);
         }
-
         [Route("/Home/items")]
         public ActionResult Items(string q="",KIND k=KIND.ALL)
         {
@@ -204,7 +205,6 @@ namespace PostOfficeApp.Controllers
                                 where rows.Labels == str_kind && rows.Ptype == s
                                 select new
                                 {
-                                    rows.Pno,
                                     rows.Pna,
                                     rows.Ppr,
                                     rows.Pdw,
@@ -217,7 +217,6 @@ namespace PostOfficeApp.Controllers
                     {
                         Newspaper temp_newspaper = new Newspaper
                         {
-                            Pno = item.Pno,
                             Pna = item.Pna,
                             Ppr = item.Ppr,
                             Pdw = item.Pdw,
@@ -246,7 +245,6 @@ namespace PostOfficeApp.Controllers
                                      where rows.Ptype == s
                                      select new
                                      {
-                                         rows.Pno,
                                          rows.Pna,
                                          rows.Ppr,
                                          rows.Pdw,
@@ -259,7 +257,6 @@ namespace PostOfficeApp.Controllers
                         {
                             Newspaper temp_newspaper = new Newspaper
                             {
-                                Pno = item.Pno,
                                 Pna = item.Pna,
                                 Ppr = item.Ppr,
                                 Pdw = item.Pdw,
@@ -281,7 +278,6 @@ namespace PostOfficeApp.Controllers
                                      where rows.Labels == s
                                      select new
                                      {
-                                         rows.Pno,
                                          rows.Pna,
                                          rows.Ppr,
                                          rows.Pdw,
@@ -294,7 +290,6 @@ namespace PostOfficeApp.Controllers
                         {
                             Newspaper temp_newspaper = new Newspaper
                             {
-                                Pno = item.Pno,
                                 Pna = item.Pna,
                                 Ppr = item.Ppr,
                                 Pdw = item.Pdw,

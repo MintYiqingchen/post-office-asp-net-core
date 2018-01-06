@@ -7,15 +7,17 @@ $(document).ready(function () {
     $.fn.search.settings.onSearchQuery = searchKey;
     $(".ui.search").search({
         apiSettings: { url: '/Home/search/?q={query}' },
-        minCharacters:3
+        minCharacters:2
     });
 
 });
 
-function searchKey(element, searchTerm) {
+function searchKey(searchTerm) {
+    console.log(searchTerm);
+    
     $(document).keyup(function (event) {
         if (event.keyCode == 13) {
-            $(location).attr("href", "/Test?q="+searchTerm);
+            $(location).attr("href", "/Test?q=" + searchTerm);
         }
     });
 }

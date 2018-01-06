@@ -35,7 +35,7 @@ namespace PostOfficeApp
             // is every table need a context ?
             services.AddDbContext<MovieDbContext>(options => 
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
-            services.AddDbContext<CustomerDbContext>(options =>
+            services.AddDbContext<AddressDbContext>(options =>
                options.UseMySQL(Configuration.GetConnectionString("MySQL")));
             services.AddDbContext<NewspaperDbContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));

@@ -9,8 +9,6 @@ namespace PostOfficeApp.Models
 {
     public class Newspaper
     {
-        //[Key]
-        //public int Pno { get; set; }
         [Key]
         public string Pno_number { get; set; }
         public string Pna { get; set; }
