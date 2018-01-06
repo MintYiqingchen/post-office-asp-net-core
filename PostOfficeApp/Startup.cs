@@ -29,10 +29,17 @@ namespace PostOfficeApp
             /*var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionBuilder.UseMySQL(Configuration.GetConnectionString("MySQL"));
             services.AddSingleton(optionBuilder.Options);*/
+
             services.AddDbContext<ApplicationDbContext>(options=>
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
             // is every table need a context ?
             services.AddDbContext<MovieDbContext>(options => 
+                options.UseMySQL(Configuration.GetConnectionString("MySQL")));
+            services.AddDbContext<CustomerDbContext>(options =>
+               options.UseMySQL(Configuration.GetConnectionString("MySQL")));
+            services.AddDbContext<NewspaperDbContext>(options =>
+                options.UseMySQL(Configuration.GetConnectionString("MySQL")));
+            services.AddDbContext<OrdersDbContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options=>
@@ -82,6 +89,7 @@ namespace PostOfficeApp
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            /*
             // get manager seed passwd
             var testUserPw = Configuration["SeedUserPW"];
             if (string.IsNullOrEmpty(testUserPw))
@@ -107,7 +115,7 @@ namespace PostOfficeApp
             catch
             {
                 System.Console.WriteLine("seed database error");
-            }
+            }*/
             
         }
     }

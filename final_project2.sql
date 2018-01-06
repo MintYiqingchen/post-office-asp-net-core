@@ -1,126 +1,13 @@
 #create schema postoffice;
 use postoffice;
-/*
-CREATE TABLE `__EFMigrationsHistory` (
-    `MigrationId` varchar(150) NOT NULL,
-    `ProductVersion` varchar(32) NOT NULL,
-    PRIMARY KEY (`MigrationId`)
-);
-
-CREATE TABLE `Movie` (
-    `ID` int NOT NULL AUTO_INCREMENT,
-    `Genre` text NULL,
-    `Price` decimal(18, 2) NOT NULL,
-    `ReleaseDate` datetime NOT NULL,
-    `Title` text NULL,
-    PRIMARY KEY (`ID`)
-);
-
-INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20180101070011_inittest', '2.0.1-rtm-125');
-
-
-drop table if exists AspNetRoles;
-CREATE TABLE `AspNetRoles` (
-    `Id` varchar(100) NOT NULL,
-    `ConcurrencyStamp` text NULL,
-    `Name` varchar(100) NULL,
-    `NormalizedName` varchar(100) NULL,
-    PRIMARY KEY (`Id`)
-);
-
-drop table if exists AspNetUsers;
-CREATE TABLE `AspNetUsers` (
-    `Id` varchar(100) NOT NULL,
-    `AccessFailedCount` int NOT NULL,
-    `ConcurrencyStamp` text NULL,
-    `Email` varchar(100) NULL,
-    `EmailConfirmed` bit NOT NULL,
-    `LockoutEnabled` bit NOT NULL,
-    `LockoutEnd` timestamp NULL,
-    `NormalizedEmail` varchar(100) NULL,
-    `NormalizedUserName` varchar(100) NULL,
-    `PasswordHash` text NULL,
-    `PhoneNumber` text NULL,
-    `PhoneNumberConfirmed` bit NOT NULL,
-    `SecurityStamp` text NULL,
-    `TwoFactorEnabled` bit NOT NULL,
-    `UserName` varchar(256) NULL,
-    PRIMARY KEY (`Id`)
-);
-
-CREATE TABLE `AspNetRoleClaims` (
-    `Id` int NOT NULL AUTO_INCREMENT,
-    `ClaimType` text NULL,
-    `ClaimValue` text NULL,
-    `RoleId` varchar(100) NOT NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_AspNetRoleClaims_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE
-);
-
-CREATE TABLE `AspNetUserClaims` (
-    `Id` int NOT NULL AUTO_INCREMENT,
-    `ClaimType` text NULL,
-    `ClaimValue` text NULL,
-    `UserId` varchar(100) NOT NULL,
-    PRIMARY KEY (`Id`),
-    CONSTRAINT `FK_AspNetUserClaims_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
-);
-
-CREATE TABLE `AspNetUserLogins` (
-    `LoginProvider` varchar(100) NOT NULL,
-    `ProviderKey` varchar(256) NOT NULL,
-    `ProviderDisplayName` text NULL,
-    `UserId` varchar(100) NOT NULL,
-    PRIMARY KEY (`LoginProvider`, `ProviderKey`),
-    CONSTRAINT `FK_AspNetUserLogins_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
-);
-
-CREATE TABLE `AspNetUserRoles` (
-    `UserId` varchar(100) NOT NULL,
-    `RoleId` varchar(100) NOT NULL,
-    PRIMARY KEY (`UserId`, `RoleId`),
-    CONSTRAINT `FK_AspNetUserRoles_AspNetRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AspNetRoles` (`Id`) ON DELETE CASCADE,
-    CONSTRAINT `FK_AspNetUserRoles_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
-);
-
-CREATE TABLE `AspNetUserTokens` (
-    `UserId` varchar(100) NOT NULL,
-    `LoginProvider` varchar(200) NOT NULL,
-    `Name` varchar(100) NOT NULL,
-    `Value` text NULL,
-    PRIMARY KEY (`UserId`, `LoginProvider`, `Name`),
-    CONSTRAINT `FK_AspNetUserTokens_AspNetUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AspNetUsers` (`Id`) ON DELETE CASCADE
-);
-
-CREATE INDEX `IX_AspNetRoleClaims_RoleId` ON AspNetRoleClaims (`RoleId`);
-
-CREATE UNIQUE INDEX `RoleNameIndex` ON AspNetRoles (`NormalizedName`);
-
-CREATE INDEX `IX_AspNetUserClaims_UserId` ON AspNetUserClaims (`UserId`);
-
-CREATE INDEX `IX_AspNetUserLogins_UserId` ON AspNetUserLogins (`UserId`);
-
-CREATE INDEX `IX_AspNetUserRoles_RoleId` ON AspNetUserRoles (`RoleId`);
-
-CREATE INDEX `EmailIndex` ON AspNetUsers (`NormalizedEmail`);
-
-CREATE UNIQUE INDEX `UserNameIndex` ON AspNetUsers (`NormalizedUserName`);
-
-
-INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20180101083440_secondUser', '2.0.1-rtm-125');
-
-*/
-
 drop table if exists `Newspaper`;
 create table Newspaper(
-	#报纸编号
-	pno int,
+	# 报纸编号
+	# pno int,
     #报纸发行号
     pno_number varchar(20) primary key,
 	#报纸名称
-	pna varchar(100) not null,
+	pna varchar(100) not null unique,
 	#报纸单价 每一年
 	ppr float not null,
 	#出版单位
@@ -135,43 +22,45 @@ create table Newspaper(
     labels varchar(20)
 )engine = InnoDB;
 
+/*
 drop table if exists `customer`;
 create table customer(
 	#用户编码 
-	gno varchar(100) unique references aspnetroles(UserId),
+	gno varchar(100) primary key references aspnetusers(UserId),
 	#用户姓名
-	gna varchar(20) not null,
+	gna varchar(50) not null,
 	#用户电话 固定为11位 
 	gte char(11) not null,
 	#用户地址
-	gad varchar(50),
+	gad varchar(200),
 	#邮政编码 固定为6位 
 	gpo char(6)
 )engine = InnoDB;
-
-drop table if exists `can_update_address`;
-create table can_update_address(
-	#用户编码
-    gno varchar(50) not null primary key
-)engine = InnoDB;
-
+*/
 drop table if exists `orders`;
 create table orders(
 	#订单编号 
 	onumber int auto_increment primary key,
 	#订报编号 
 	ona varchar(10),
-	foreign key(ona) references newspaper(pno_number),
+	foreign key(ona) references newspaper(pno_number) on update cascade,
 	#订报数量 
 	ofen int not null,#完整性约束 
 	#订报人编号 
 	opeople varchar(50),
-	foreign key(opeople) references customer(gno),
+	foreign key(opeople) references aspnetusers(Id) on update cascade,
+    
 	#订报地址 
 	oaddress varchar(200) not null,
+    #邮政编码 固定为6位 
+	gpo char(6),
+    #用户姓名
+	gna varchar(50) not null,
+	#用户电话 固定为11位 
+	gte char(11) not null,
+    
 	#订单日期 
 	ostart_year int not null,#完整性约束 >= 现在的年份 
-	
 	#订单价格 
 	oprice float not null,#完整性约束 
 	#订单有效时间 
@@ -182,11 +71,18 @@ create table orders(
 	boolpay bool
 )auto_increment = 1 engine = InnoDB;
 
+drop table if exists `can_update_address`;
+create table can_update_address(
+	#订单编号
+    Id varchar(50) not null primary key references orders(onumber) on update cascade
+)engine = InnoDB;
+
 #建立索引，方便查找
-create unique index newspaper_the_number on newspaper(pno);
-create unique index customer_number on customer(gno);
-create unique index order_number on orders(ona);
-create unique index newspaper_public_number on newspaper(pno_number);
+#create unique index newspaper_the_number on newspaper(pno);
+#create unique index customer_number on customer(gno);
+create index order_paper_number on orders(ona);
+create index order_user_number on orders(opeople);
+#create unique index newspaper_public_number on newspaper(pno_number);
 create index newspaper_labels on newspaper(labels);
 
 #建立发刊类型验证函数，验证为1-8的类型 
@@ -525,4 +421,21 @@ create view all_of_orders(onumber, ona, ofen, opeople, oaddress, ostart_year, os
 as select *
 from orders;
 */
+# alter table newspaper add column Img_url varchar(128) null;
+
+create table address(
+	#订报地址 
+	oaddress varchar(200) not null,
+    #邮政编码 固定为6位 
+	gpo char(6),
+    #用户姓名
+	gna varchar(50) not null,
+	#用户电话 固定为11位 
+	gte char(11) not null,
+    
+    uid char(100) not null,
+    constraint foreign key own(uid) 
+    references aspnetusers(Id) on delete cascade on update cascade
+    
+);
 
