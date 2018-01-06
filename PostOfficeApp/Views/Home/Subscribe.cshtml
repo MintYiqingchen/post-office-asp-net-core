@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "订购";
+}
+
+<h2>下订单</h2>
+<form method="post" asp-action="subscribe" class="ui form">
+    <h4 class="ui dividing header">寄送信息</h4>
+    <div class="field">
+        <label for="receiver">收件人:</label>
+        <input name="receiver" required />
+    </div>
+    <div class="field">
+        <label for="phone">联系电话：</label>
+        <input name="phone" required />
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label for="province">省份：</label>
+            <select class="ui fluid dropdown">
+                <option value="">Province</option>
+                <option value="GY">贵州</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="city">城市：</label>
+            <select class="ui fluid dropdown">
+                <option value="default">贵阳</option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="address">街道地址：</label>
+        <input name="address" required />
+    </div>
+    <button class="ui disabled button" type="submit">提交订单</button>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/semantic.min.js"></script>
+

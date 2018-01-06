@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +8,9 @@ using PostOfficeApp.Data;
 using PostOfficeApp.Models;
 using PostOfficeApp.Services;
 using PostOffice.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using System;
 
 namespace PostOfficeApp
 {
@@ -27,7 +26,10 @@ namespace PostOfficeApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            /*var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionBuilder.UseMySQL(Configuration.GetConnectionString("MySQL"));
+            services.AddSingleton(optionBuilder.Options);*/
+            services.AddDbContext<ApplicationDbContext>(options=>
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
             // is every table need a context ?
             services.AddDbContext<MovieDbContext>(options => 
@@ -79,6 +81,34 @@ namespace PostOfficeApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // get manager seed passwd
+            var testUserPw = Configuration["SeedUserPW"];
+            if (string.IsNullOrEmpty(testUserPw))
+            {
+                throw new System.Exception("use dotnet user-secrets set SeedUserPW <pw>");
+            }
+            else
+            {
+                System.Console.WriteLine(testUserPw);
+            }
+
+            // initialize administrator of this application
+            try
+            {
+                var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+                using (var scope = scopeFactory.CreateScope())
+                {
+                    var dbcontext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                    var myService = scope.ServiceProvider.GetService<IServiceProvider>();
+                    SeedDB.Initialize(myService, dbcontext, testUserPw).Wait();
+                }
+            }
+            catch
+            {
+                System.Console.WriteLine("seed database error");
+            }
+            
         }
     }
 }

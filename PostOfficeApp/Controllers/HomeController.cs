@@ -100,5 +100,6 @@ namespace PostOfficeApp.Controllers
             ViewData["kind"] = k;
             return View();
         }
+
     }
 }

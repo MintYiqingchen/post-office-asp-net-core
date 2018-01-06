@@ -11,3 +11,13 @@
 A container limits content to a maximum width 
 
 6.angular通过$event.target 来获得触发时间的对象
+
+7.[AllowAnonymous]用在controller或是action上
+dotnet user-secrets set SeedUserPW <PW>
+[Authorize(Roles = "Administrator,otherroles")]
+
+8.跨站请求攻击：
+n ASP.NET Core MVC 2.0 the FormTagHelper injects anti-forgery tokens for HTML form elements. 
+<form method="post">
+  <!-- form markup -->
+</form>

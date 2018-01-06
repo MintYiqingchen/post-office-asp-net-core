@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace PostOfficeApp.Models
 {
+    public static class Constants
+    {
+        public static string ManageRole { get; } = "Manager";
+        public static string AdministratorRole { get; } = "Admin";
+        public static string ClientRole { get; } = "Client";
+    }
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
