@@ -1,14 +1,13 @@
-﻿@model IEnumerable<PostOffice.Models.Movie>
+﻿@using PostOfficeApp.Models;
+@model IDictionary<string,IEnumerable<Newspaper>>
 @using PostOfficeApp.Controllers;
 @using PostOfficeApp.Authorization;
-
-
 @{
     ViewData["Title"] = "Home Page";
     int i = 1;
-    List<string> contentCon = new List<string> { "报纸","商业/财经/营销", "教育/育儿/外语", "建筑/地理/园林" ,"时尚/娱乐/服饰",
-                                        "文体/艺术/广告", "旅游/摄影/数码", "时政/军事/资讯", "汽车/生活/百科",
-                                        "医学/美食/酒店", "电影/动漫/影视", "科技/会展/互联网"};
+    List<string> contentCon;
+    contentCon = Model.Keys.ToList();
+    contentCon.Sort(delegate (string a, string b) { return a.Length.CompareTo(b.Length); });
 }
 <div class="ui large borderless fixed menu" id="top-nav" style="max-height:80px">
     <a class="item" asp-area="" asp-controller="Home" asp-action="Index">主页</a>
@@ -39,9 +38,9 @@
     <!--左侧导航栏-->
     <div class="four wide column">
         <div class="ui vertical attached fluid tabular menu">
-            @foreach(var content in contentCon)
-            {
-                <a class="item" data-tab="@i.ToString()">@content</a>
+            @for(i = 0;i<contentCon.Count();i++)
+{
+                <a class="item" data-tab="@i.ToString()">@contentCon[i]</a>
                 i++;
             }
         </div>
@@ -50,13 +49,15 @@
     <!--右侧卡片区-->
     <div class="twelve wide stretched column">
         @{ 
-            for(int j = 1; j <= contentCon.Count(); ++j)
+            for(int j=0;j<contentCon.Count();j++)
             {
+                var label = contentCon[j];
+                var templist = Model[label];
                 <div class="ui attached tab segment" data-tab="@j.ToString()">
                     <!--卡片组部分-->
                     <div class="ui special cards">
-                        @for (int k = 0; k < 20; ++k)
-                        {
+                        @foreach (var news in templist)
+{
                             <div class="card">
                                 <!--遮罩层图片-->
                                 <div class="blurring dimmable image">
@@ -64,7 +65,7 @@
                                         <div class="content">
                                             <div class="center">
                                                 <div class="ui inverted button">
-                                                    <a asp-action="Create" asp-controller="Subscribe" asp-route-id="1">现在订购</a>
+                                                    <a asp-action="Create" asp-controller="Subscribe" asp-route-id="@news.Pno_number">现在订购</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -72,12 +73,12 @@
                                     <img src="~/images/banner2.svg" />
                                 </div>
                                 <div class="content">
-                                    <div class="header">人民日报</div>
+                                    <div class="header">@news.Pna</div>
                                     <div class="meta">
-                                        <span class="price">价格</span>
-                                        <span class="publish">出版社</span>
+                                        <span class="price">价格:@news.Ppr</span>
+                                        <span class="publish">出版社:@news.Pdw</span>
                                     </div>
-                                    <div class="description">大致内容描述</div>
+                                    <div class="description">@news.Ptype</div>
                                 </div>
                                 @*if (await AuthorizationService.AuthorizeAsync(User,)*@
                                 <div class="extra content">

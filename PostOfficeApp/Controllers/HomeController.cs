@@ -22,16 +22,14 @@ namespace PostOfficeApp.Controllers
 
     public class HomeController : Controller
     {
-        private readonly MovieDbContext _context;
         private readonly ApplicationDbContext _context1;
         private readonly NewspaperDbContext _context2;
         private readonly IAuthorizationService _authorizationService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public HomeController(MovieDbContext context, 
+        public HomeController(
             ApplicationDbContext context1, NewspaperDbContext context2,
             IAuthorizationService authorizationService,UserManager<ApplicationUser> userManager)
         {
-            _context = context;
             _context1 = context1;
             _context2 = context2;
             _authorizationService = authorizationService;
@@ -39,9 +37,17 @@ namespace PostOfficeApp.Controllers
         }
 
         // http get
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Movie.ToListAsync());
+            List<string> labels = _context2.Newspaper.FromSql("select distinct labels from newspaper")
+                .Select(c=>c.Labels).ToList();
+            var content = new Dictionary<string, IEnumerable<Newspaper>>();
+            foreach(var label in labels)
+            {
+                var temp = _context2.Newspaper.Where(c=>c.Labels==label).ToList();
+                content.Add(label, temp.Take(Math.Min(temp.Count(),12)));
+            }
+            return View(content);
         }
 
         public IActionResult About()
