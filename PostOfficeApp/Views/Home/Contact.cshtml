@@ -8,9 +8,9 @@
         <span class="item">订阅报刊<i class="dropdown icon"></i></span>
         <div class="menu">
             <div class="header">种类</div>
-            @Html.ActionLink("报纸", "Items", "Home", new { k = KIND.NEWSPAPER }, new { @class = "item" })
-            @Html.ActionLink("杂志", "Items", "Home", new { k = KIND.MAGZINE }, new { @class = "item" })
-            @Html.ActionLink("所有", "Items", "Home", new { k = KIND.ALL }, new { @class = "item" })
+            @Html.ActionLink("报纸", "Items", "Home", new { q = "", k = "NEWSPAPER" }, new { @class = "item" })
+            @Html.ActionLink("杂志", "Items", "Home", new { q = "", k = "MAGZINE" }, new { @class = "item" })
+            @Html.ActionLink("所有", "Items", "Home", new { q = "", k = "ALL" }, new { @class = "item" })
         </div>
     </div>
     <a class="item" asp-area="" asp-controller="Home" asp-action="About">关于</a>

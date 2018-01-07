@@ -137,7 +137,7 @@ namespace PostOfficeApp.Controllers
                                 select new JObject(
                                     new JProperty("title", p.Pna),
                                     new JProperty("url",
-                                    System.Web.HttpUtility.UrlEncode($"Home/details/{p.Pno_number}", System.Text.Encoding.UTF8))
+                                    System.Web.HttpUtility.UrlEncode($"Subscribe/Create/{p.Pno_number}", System.Text.Encoding.UTF8))
                                 )
                             )
                         ));
@@ -193,7 +193,7 @@ namespace PostOfficeApp.Controllers
                            select new JObject(
                                new JProperty("title", p.Pna),
                                new JProperty("url", 
-                               System.Web.HttpUtility.UrlEncode($"Home/details/{p.Pno_number}", System.Text.Encoding.UTF8))
+                               System.Web.HttpUtility.UrlEncode($"/Subscribe/Create/{p.Pno_number}", System.Text.Encoding.UTF8))
                            )
                        )
                    ));
@@ -210,13 +210,13 @@ namespace PostOfficeApp.Controllers
             return new JsonResult(returnContent);
         }
         [Route("/Home/items")]
-        public ActionResult Items(string q="",KIND k=KIND.ALL)
+        public async Task<ActionResult> Items(string q="",string k="ALL")
         {
             /* @usage：重定向到条目网页
              * @q:搜索关键词
              * @k:见KIND定义
              */
-            IEnumerable<string> keys = q.ToLower().Split(' ');
+            string[] keys = q.ToLower().Split(' ');
             string str_kind = k.ToString();
             var newspaper_list = new List<Newspaper>();
             //搜索对象为报纸
@@ -224,111 +224,37 @@ namespace PostOfficeApp.Controllers
             {
                 foreach (var s in keys)
                 {
-                    var query = from rows in _context2.Newspaper
-                                where rows.Labels == str_kind && rows.Ptype == s
-                                select new
-                                {
-                                    rows.Pna,
-                                    rows.Ppr,
-                                    rows.Pdw,
-                                    rows.Ptype,
-                                    rows.Total_sell_out,
-                                    rows.Labels
-                                };
-                    List<Newspaper> temp_newspaper_list = new List<Newspaper>();
-                    foreach (var item in query)
-                    {
-                        Newspaper temp_newspaper = new Newspaper
-                        {
-                            Pna = item.Pna,
-                            Ppr = item.Ppr,
-                            Pdw = item.Pdw,
-                            Ptype = item.Ptype,
-                            Total_sell_out = item.Total_sell_out,
-                            Labels = item.Labels
-                        };
-                        newspaper_list.Add(temp_newspaper);
-                    }
+                    var query = await _context2.Newspaper.Where(c => c.Labels == "报纸" && c.Pna.Contains(s)).ToListAsync();
+                    newspaper_list.AddRange(query);
                 }
-                IEnumerable<Newspaper> result = newspaper_list;
-                ViewData["kind"] = k;
-                return View(result);
+                ViewData["kind"] = KIND.NEWSPAPER;
             }
-            else
+            else if (k == "ALL")
             {
-                List<Newspaper> temp_newspaper_list = new List<Newspaper>();
-
-                //先筛选出对应标签的条目，再一个个筛选发刊类型
-                foreach (var s in keys)
-                {
-                    //筛选出符合类型的
-                    if (!Regex.IsMatch(s, @"^\w+/\w+/\w+$"))
-                    {
-                        var query2 = from rows in _context2.Newspaper
-                                     where rows.Ptype == s
-                                     select new
-                                     {
-                                         rows.Pna,
-                                         rows.Ppr,
-                                         rows.Pdw,
-                                         rows.Ptype,
-                                         rows.Total_sell_out,
-                                         rows.Labels
-                                     };
-
-                        foreach (var item in query2)
-                        {
-                            Newspaper temp_newspaper = new Newspaper
-                            {
-                                Pna = item.Pna,
-                                Ppr = item.Ppr,
-                                Pdw = item.Pdw,
-                                Ptype = item.Ptype,
-                                Total_sell_out = item.Total_sell_out,
-                                Labels = item.Labels
-                            };
-                            temp_newspaper_list.Add(temp_newspaper);
-                        }
-                    }
-
+                foreach (var s in keys) {
+                    var temp = await _context2.Newspaper.Where(c=>c.Pna.Contains(s)).ToListAsync();
+                    newspaper_list.AddRange(temp);
                 }
-                foreach (var s in keys)
-                {
-                    //筛选出符合发刊周期的
-                    if (Regex.IsMatch(s, @"^\w+/\w+/\w+$"))
-                    {
-                        var query2 = from rows in temp_newspaper_list
-                                     where rows.Labels == s
-                                     select new
-                                     {
-                                         rows.Pna,
-                                         rows.Ppr,
-                                         rows.Pdw,
-                                         rows.Ptype,
-                                         rows.Total_sell_out,
-                                         rows.Labels
-                                     };
-
-                        foreach (var item in query2)
-                        {
-                            Newspaper temp_newspaper = new Newspaper
-                            {
-                                Pna = item.Pna,
-                                Ppr = item.Ppr,
-                                Pdw = item.Pdw,
-                                Ptype = item.Ptype,
-                                Total_sell_out = item.Total_sell_out,
-                                Labels = item.Labels
-                            };
-                            newspaper_list.Add(temp_newspaper);
-                        }
-                    }
-
-                }
-                IEnumerable<Newspaper> result = newspaper_list;
-                ViewData["kind"] = k;
-                return View(result);
+                ViewData["kind"] = KIND.ALL;
             }
+            else if( k== "MAGZINE")
+            {
+                if (keys[0] == "")
+                {
+                    newspaper_list = await _context2.Newspaper.Where(c => c.Labels != "报纸").ToListAsync();
+                }
+                else
+                {
+                    foreach(var key in keys)
+                    {
+                        var temp = await _context2.Newspaper.Where(c => c.Labels != "报纸" && c.Pna.Contains(key)).ToListAsync();
+                        newspaper_list.AddRange(temp);
+                    }
+                    
+                }
+                ViewData["kind"] = KIND.MAGZINE;
+            }
+            return View(newspaper_list);
         }
 
         private Newspaper Model_to_viewModel(Newspaper newspaper)

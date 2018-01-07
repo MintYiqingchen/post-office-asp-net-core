@@ -1,13 +1,15 @@
 ﻿#content-box {
     width: 70%;
     margin: 0 auto;
+    max-height:1000px;
+    overflow-y:scroll;
 }
 #main-title{
     border-bottom-style:groove;
     padding-top:80px;
 }
 
-.container{
+.flexbox-container{
     display:flex;
     align-items:flex-start;
 }

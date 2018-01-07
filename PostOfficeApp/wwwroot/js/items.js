@@ -24,19 +24,37 @@ app.controller('myFilter', function ($scope, $http) {
         if (idx === -1) {
             $scope.filtermap[kind].push(v);
         }
-        let p = {
-            cata: fm['content'].join(','),
-            periodic: fm['periodic'].join(',')
-        };
+        $('#content-box>div').hide();
+        for (let a in fm['content']) {
+            let temp = fm['content'][a].split("/");
+            console.log('#content-box>div[class*=' + temp[0] + ']');
+            $('#content-box>div[class*=' + temp[0] + ']').show();
+        }
+        for (let a in fm['periodic']) {
+            $('#content-box>div.' + fm['content'][a]).show();
+        }
     };
     $scope.deleteCondition = function (myEvent, kind) {
         let v = myEvent.target.parentNode.innerText;
         let idx = $scope.filtermap[kind].indexOf(v);
         $scope.filtermap[kind].splice(idx, 1);
-        // console.log($scope.filtermap);
+        if (fm['content'].length > 0 || fm['periodic'].length > 0) {
+            $('#content-box>div').hide();
+            for (let a in fm['content']) {
+                let temp = fm['content'][a].split("/");
+                $('#content-box>div[class*=' + temp[0] + ']').show();
+            }
+            for (let a in fm['periodic']) {
+                $('#content-box>div[class*=' + temp[0] + ']').show();
+            }
+        }
+        else {
+            $scope.clearTags();
+        }
     };
     $scope.clearTags = function () {
         $scope.filtermap['content'] = new Array();
         $scope.filtermap['periodic'] = new Array();
+        $('#content-box>div').show();
     };
 });

@@ -1,5 +1,5 @@
 ﻿@using PostOfficeApp.Controllers
-
+@model List<Newspaper>
 @{
     ViewData["Title"] = "订阅列表";
     List<string> contentCon=new List<string>(), periodicCon=new List<string>();
@@ -7,9 +7,11 @@
     if ((KIND)ViewData["kind"] == KIND.ALL)
     {
         allactive += " active";
-        contentCon = new List<string> { "商业/财经/营销", "教育/育儿/外语", "建筑/地理/园林" ,"时尚/娱乐/服饰",
-                                "文体/艺术/广告", "旅游/摄影/数码", "时政/军事/资讯", "汽车/生活/百科",
-                                "医学/美食/酒店", "电影/动漫/影视", "科技/会展/互联网"};
+        contentCon = new List<string> { "报纸","外语/英语/期刊","家庭/健康/养生","少儿/兴趣/阅读","建筑/艺术/设计",
+                                        "摄影/摄像/平面","教育/教学/参考","文化/艺术/收藏","文学/文摘/经典",
+                                        "时事 /时政/新闻","时尚/服饰/美妆","校园/学习/辅导","母婴/亲子/育儿",
+                                        "汽车/男士/品质","烹饪/美食/厨房","科普/科技/军事","财经/商业/管理","音乐/影视/广告" };
+    
         periodicCon = new List<string> { "日报", "周报", "双周报", "旬报", "周刊", "半月刊", "月刊", "双月刊", "季刊" };
     }
     else if ((KIND)ViewData["kind"] == KIND.NEWSPAPER)
@@ -20,9 +22,10 @@
     else if ((KIND)ViewData["kind"] == KIND.MAGZINE)
     {
         magzineact += " active";
-        contentCon = new List<string> { "商业/财经/营销", "教育/育儿/外语", "建筑/地理/园林" ,"时尚/娱乐/服饰",
-                                "文体/艺术/广告", "旅游/摄影/数码", "时政/军事/资讯", "汽车/生活/百科",
-                                "医学/美食/酒店", "电影/动漫/影视", "科技/会展/互联网"};
+        contentCon = new List<string> { "外语/英语/期刊","家庭/健康/养生","少儿/兴趣/阅读","建筑/艺术/设计",
+                                        "摄影/摄像/平面","教育/教学/参考","文化/艺术/收藏","文学/文摘/经典",
+                                        "时事 /时政/新闻","时尚/服饰/美妆","校园/学习/辅导","母婴/亲子/育儿",
+                                        "汽车/男士/品质","烹饪/美食/厨房","科普/科技/军事","财经/商业/管理","音乐/影视/广告"};
         periodicCon = new List<string> { "周刊", "半月刊", "月刊", "双月刊", "季刊" };
     }
 }
@@ -32,9 +35,9 @@
         <span class="item">订阅报刊<i class="dropdown icon"></i></span>
         <div class="menu">
             <div class="header">种类</div>
-            @Html.ActionLink("报纸", "Items", "Home", new { k = KIND.NEWSPAPER }, new { @class = news })
-            @Html.ActionLink("杂志", "Items", "Home", new { k = KIND.MAGZINE }, new { @class = magzineact })
-            @Html.ActionLink("所有", "Items", "Home", new { k = KIND.ALL }, new { @class = allactive })
+            @Html.ActionLink("报纸", "Items", "Home", new { q="",k="NEWSPAPER" }, new { @class = news })
+            @Html.ActionLink("杂志", "Items", "Home", new { q="",k = "MAGZINE" }, new { @class = magzineact })
+            @Html.ActionLink("所有", "Items", "Home", new { q="",k = "ALL" }, new { @class = allactive })
         </div>
     </div>
     <a class="item" asp-area="" asp-controller="Home" asp-action="About">关于</a>
@@ -50,7 +53,7 @@
     </div>
 </div>
 <h3 id="main-title">商品列表</h3>
-<div class="container" ng-app="myApp">
+<div class="flexbox-container" ng-app="myApp">
     <!--条件筛选过滤框-->
     <div id="filter-bar" ng-controller="myFilter">
         <div id="tags">
@@ -87,60 +90,29 @@
     </div>
     <!--条目呈现区-->
     <div class="ui divided items" id="content-box">
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">12 Years a Slave</a>
-                <div class="meta">
-                    <span class="cinema">Union Square 14</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui label">IMAX</div>
-                    <div class="ui label"><i class="globe icon"></i> Additional Languages</div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">My Neighbor Totoro</a>
-                <div class="meta">
-                    <span class="cinema">IFC Cinema</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui right floated primary button">Buy tickets <i class="right chevron icon"></i> </div>
-                    <div class="ui label">Limited</div>
-                </div>
-
-            </div>
-        </div>
-        <div class="item">
-            <div class="image">
-                <img src="">
-            </div>
-            <div class="content">
-                <a class="header">Watchmen</a>
-                <div class="meta">
-                    <span class="cinema">IFC</span>
-                </div>
-                <div class="description">
-                    <p></p>
-                </div>
-                <div class="extra">
-                    <div class="ui right floated primary button">Buy tickets <i class="right chevron icon"></i> </div>
+        @foreach(var item in Model)
+        {
+            <div class="item @item.Labels @item.Ptype">
+                <div class="image"><img src="@item.Img_url" /></div>
+                <div class="content">
+                    <h4 class="header">@item.Pna</h4>
+                    <div class="meta">
+                        <span class="publisher">@item.Pdw</span>
+                    </div>
+                    <div class="price">
+                        全年定价：@item.Ppr
+                    </div>
+                    <div class="extra">
+                        <div class="ui label">@item.Labels</div>
+                        <div class="ui right floated green button">
+                            <a style="text-decoration:none;color:white;" asp-controller="Subscribe" asp-route-id="@item.Pno_number" asp-action="Create">
+                                现在订购
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
