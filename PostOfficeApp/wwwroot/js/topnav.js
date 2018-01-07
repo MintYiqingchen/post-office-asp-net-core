@@ -13,7 +13,6 @@ $(document).ready(function () {
 });
 
 function searchKey(searchTerm) {
-    console.log(searchTerm);
     
     $(document).keyup(function (event) {
         if (event.keyCode == 13) {

@@ -1,0 +1,76 @@
+﻿@model PostOfficeApp.Models.Newspaper
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>报纸信息</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Pno_number" />
+        <div class="form-group">
+            <label asp-for="Pna" class="col-md-2 control-label">刊物名称</label>
+            <div class="col-md-10">
+                <input asp-for="Pna" class="form-control" />
+                <span asp-validation-for="Pna" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Ppr" class="col-md-2 control-label">价格：</label>
+            <div class="col-md-10">
+                <input asp-for="Ppr" class="form-control" />
+                <span asp-validation-for="Ppr" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Labels" class="col-md-2 control-label">标签：</label>
+            <div class="col-md-10">
+                <input asp-for="Labels" class="form-control" />
+                <span asp-validation-for="Labels" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Ptype" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Ptype" class="form-control" />
+                <span asp-validation-for="Ptype" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Pdw" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Pdw" class="form-control" />
+                <span asp-validation-for="Pdw" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Img_url" class="col-md-2 control-label">图片地址：</label>
+            <div class="col-md-10">
+                <input asp-for="Img_url" class="form-control" />
+                <span asp-validation-for="Img_url" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

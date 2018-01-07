@@ -1,8 +1,4 @@
-﻿@using System.Collections.Generic
-@using System.Linq
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
-@model LoginViewModel
+﻿@model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
@@ -57,9 +53,6 @@
     
 </div>
 <link rel="stylesheet" href="~/css/login.css" />
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/semantic.min.js"></script>
-<script src="~/lib/angular.js"></script>
 <script>
     $('#backtag').click(function () { history.back(); });
 </script>

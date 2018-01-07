@@ -8,6 +8,11 @@ namespace PostOfficeApp.Models
 {
     public static class Constants
     {
+        public static readonly string CreateOperationName = "Create";
+        public static readonly string ReadOperationName = "Read";
+        public static readonly string UpdateOperationName = "Update";
+        public static readonly string DeleteOperationName = "Delete";
+
         public static string ManageRole { get; } = "Manager";
         public static string AdministratorRole { get; } = "Admin";
         public static string ClientRole { get; } = "Client";

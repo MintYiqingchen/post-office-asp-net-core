@@ -10,6 +10,8 @@ using PostOfficeApp.Models;
 using PostOffice.Models;
 using Microsoft.EntityFrameworkCore;
 using PostOfficeApp.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PostOfficeApp.Controllers
 {   
@@ -23,22 +25,22 @@ namespace PostOfficeApp.Controllers
         private readonly MovieDbContext _context;
         private readonly ApplicationDbContext _context1;
         private readonly NewspaperDbContext _context2;
-        private readonly OrdersDbContext _context3;
-        public HomeController(MovieDbContext context, ApplicationDbContext context1, NewspaperDbContext context2, OrdersDbContext context3)
+        private readonly IAuthorizationService _authorizationService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(MovieDbContext context, 
+            ApplicationDbContext context1, NewspaperDbContext context2,
+            IAuthorizationService authorizationService,UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _context1 = context1;
             _context2 = context2;
-            _context3 = context3;
-
+            _authorizationService = authorizationService;
+            _userManager = userManager;
         }
 
-        
         // http get
         public async Task<IActionResult> Index()
         {
-            /**/
-            
             return View(await _context.Movie.ToListAsync());
         }
 
@@ -61,6 +63,21 @@ namespace PostOfficeApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var newspaper = await _context2.Newspaper.SingleOrDefaultAsync(m => m.Pno_number == id);
+            if (newspaper == null)
+            {
+                return NotFound();
+            }
+            var editModel = Model_to_viewModel(newspaper);
+            return View(editModel);
+        }
         [Route("/Home/search")]
         public JsonResult Search(string q="")
         {
@@ -69,7 +86,7 @@ namespace PostOfficeApp.Controllers
              * @k:见KIND定义
              */
             JObject returnContent = new JObject();
-            IEnumerable<string> keys = q.ToLower().Split();
+            IEnumerable<string> keys = q.ToLower().Split(' ');
             List<Newspaper> newspaper_list = new List<Newspaper>();
             foreach (var s in keys)
             {
@@ -193,7 +210,7 @@ namespace PostOfficeApp.Controllers
              * @q:搜索关键词
              * @k:见KIND定义
              */
-            IEnumerable<string> keys = q.ToLower().Split(',');
+            IEnumerable<string> keys = q.ToLower().Split(' ');
             string str_kind = k.ToString();
             var newspaper_list = new List<Newspaper>();
             //搜索对象为报纸
@@ -308,5 +325,17 @@ namespace PostOfficeApp.Controllers
             }
         }
 
+        private Newspaper Model_to_viewModel(Newspaper newspaper)
+        {
+            var editModel = new Newspaper();
+            editModel.Pno_number = newspaper.Pno_number;
+            editModel.Pna = newspaper.Pna;
+            editModel.Ppr = newspaper.Ppr;
+            editModel.Pdw = newspaper.Pdw;
+            editModel.Ptype= newspaper.Ptype;
+            editModel.Labels = newspaper.Labels;
+            editModel.Img_url = newspaper.Img_url;
+            return editModel;
+        }
     }
 }

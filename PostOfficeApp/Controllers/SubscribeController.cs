@@ -19,18 +19,17 @@ namespace PostOfficeApp.Controllers
             _userManager = manager;
         }
         [HttpGet]
-        [Route("/subscribe")]
-        public ActionResult Subscribe()
+        public ActionResult Create(string newspaperid)
         {
-            /* @usage:make a subscribe
-             * @ 
+            /* @ usage:make a subscribe
+             * @ id:发刊号
              */
-            return View("/Home/Subscribe.cshtml");
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Subscribe(string q)
+        public async Task<IActionResult> Subscribe([Bind("Ona","Ofen","Opeopel","Oaddress","Opo")] Orders myOrder)
         {
             return Redirect("/");
         }

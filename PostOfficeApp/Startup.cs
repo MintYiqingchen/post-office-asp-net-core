@@ -9,7 +9,7 @@ using PostOfficeApp.Models;
 using PostOfficeApp.Services;
 using PostOffice.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using PostOfficeApp.Authorization;
 using System;
 
 namespace PostOfficeApp
@@ -51,6 +51,7 @@ namespace PostOfficeApp
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            services.AddSingleton<IAuthorizationHandler, AdministratorArthorizationHandler>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

@@ -19,6 +19,12 @@ namespace PostOfficeApp.Views.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
+        public static string MyAddress => "AddressManage";
+        public static string MySub => "MySubscription";
+
+        public static string AddressManage(ViewContext viewContext) => PageNavClass(viewContext, MyAddress);
+        public static string MySubscription(ViewContext viewContext) => PageNavClass(viewContext, MySub);
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);

@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<PostOffice.Models.Movie>
-@using PostOfficeApp.Controllers
+@using PostOfficeApp.Controllers;
+@using PostOfficeApp.Authorization;
+
+
 @{
     ViewData["Title"] = "Home Page";
     int i = 1;
@@ -33,6 +36,7 @@
 <h3 id="main-title">报刊杂志推荐</h3>
 
 <div class="ui grid" id="content-box">
+    <!--左侧导航栏-->
     <div class="four wide column">
         <div class="ui vertical attached fluid tabular menu">
             @foreach(var content in contentCon)
@@ -42,22 +46,42 @@
             }
         </div>
     </div>
+
+    <!--右侧卡片区-->
     <div class="twelve wide stretched column">
         @{ 
             for(int j = 1; j <= contentCon.Count(); ++j)
             {
                 <div class="ui attached tab segment" data-tab="@j.ToString()">
                     <!--卡片组部分-->
-                    <div class="ui link cards">
+                    <div class="ui special cards">
                         @for (int k = 0; k < 20; ++k)
                         {
                             <div class="card">
-                                <div class="medium image">
-                                    <img src="~/images/banner1.svg" />
+                                <!--遮罩层图片-->
+                                <div class="blurring dimmable image">
+                                    <div class="ui dimmer">
+                                        <div class="content">
+                                            <div class="center">
+                                                <div class="ui inverted button">
+                                                    <a asp-action="Create" asp-controller="Subscribe" asp-route-id="1">现在订购</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img src="~/images/banner2.svg" />
                                 </div>
                                 <div class="content">
                                     <div class="header">人民日报</div>
-                                    <div class="meta">价格：15.0</div>
+                                    <div class="meta">
+                                        <span class="price">价格</span>
+                                        <span class="publish">出版社</span>
+                                    </div>
+                                    <div class="description">大致内容描述</div>
+                                </div>
+                                @*if (await AuthorizationService.AuthorizeAsync(User,)*@
+                                <div class="extra content">
+                                    <a>编辑</a>
                                 </div>
                             </div>    
                         }
@@ -84,5 +108,6 @@
         }
     });
     $('.menu .item').tab();
+    $('.special.cards .image').dimmer({ on: 'hover' });
 </script>
 <link type="text/css" rel="stylesheet" href="~/css/index.css" />

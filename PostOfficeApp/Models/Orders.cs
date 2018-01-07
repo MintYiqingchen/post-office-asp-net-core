@@ -13,6 +13,7 @@ namespace PostOfficeApp.Models
         [Key]
         public string Onumber { get; set; }
         public string Ona { get; set; }
+        [Range(1,999)]
         public int Ofen { get; set; }
         public int Opeople { get; set; }
         

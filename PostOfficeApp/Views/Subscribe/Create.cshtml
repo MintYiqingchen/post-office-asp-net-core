@@ -1,0 +1,55 @@
+﻿@inject IAuthorizationService AuthorizationService
+@using PostOfficeApp.Models.AccountViewModels
+@using PostOfficeApp.Models.ManageViewModels
+@model PostOfficeApp.Models.Orders
+@{
+    ViewData["Title"] = "订购";
+}
+<div class="ui clearning segment">
+    <div id="backtag">
+        <a><i class="ui arrow left icon"></i></a>
+        <span class="ui left header">返回</span>
+    </div>
+</div>
+<div class="container">
+    <div class="ui basic segment">
+        商品信息描述之类的
+    </div>
+    <div class="ui basic segment">
+        <h2>下订单</h2>
+        <form method="post" asp-action="subscribe" class="ui form">
+            <h4 class="ui dividing header">订购详情</h4>
+            <div class="field">
+                <label asp-for="Ofen">订购数量：</label>
+                <input type="number" asp-for="Ofen" value="1" />
+                <span asp-validation-for="Ofen" class="text-danger"></span>
+            </div>
+            <h4 class="ui dividing header">寄送信息</h4>
+            <div class="field">
+                <label asp-for="Gna">收件人:</label>
+                <input asp-for="Gna" required />
+                <span asp-validation-for="Gna" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Gte">联系电话：</label>
+                <input asp-for="Gte" required />
+                <span asp-validation-for="Gte" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label for="address">寄送地址：</label>
+                <input name="address" required />
+            </div>
+            <button class="ui button" type="submit">提交订单</button>
+        </form>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/semantic.min.js"></script>
+<script>
+    $('#backtag').click(function () { history.back(); });
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

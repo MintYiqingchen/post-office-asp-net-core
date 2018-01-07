@@ -25,4 +25,9 @@ h1, h2, h3, h4, h5 {
 .centered{
     margin:auto;
 }
+.container{
+    width:70%;
+    margin:auto;
+    padding-top:2rem;
+}
 
