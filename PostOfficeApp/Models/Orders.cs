@@ -15,7 +15,7 @@ namespace PostOfficeApp.Models
         public string Ona { get; set; }
         [Range(1,999)]
         public int Ofen { get; set; }
-        public int Opeople { get; set; }
+        public string Opeople { get; set; }
         
         // 配送信息
         public string Oaddress { get; set; }

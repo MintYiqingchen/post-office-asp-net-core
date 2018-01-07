@@ -1,4 +1,5 @@
 ﻿@using PostOfficeApp.Controllers
+@using PostOfficeApp.Authorization;
 @model List<Newspaper>
 @{
     ViewData["Title"] = "订阅列表";
@@ -11,8 +12,8 @@
                                         "摄影/摄像/平面","教育/教学/参考","文化/艺术/收藏","文学/文摘/经典",
                                         "时事 /时政/新闻","时尚/服饰/美妆","校园/学习/辅导","母婴/亲子/育儿",
                                         "汽车/男士/品质","烹饪/美食/厨房","科普/科技/军事","财经/商业/管理","音乐/影视/广告" };
-    
-        periodicCon = new List<string> { "日报", "周报", "双周报", "旬报", "周刊", "半月刊", "月刊", "双月刊", "季刊" };
+
+        periodicCon = new List<string> { "日报", "周报", "周刊", "双周刊","旬刊","半月刊", "月刊", "双月刊", "季刊" };
     }
     else if ((KIND)ViewData["kind"] == KIND.NEWSPAPER)
     {
@@ -26,7 +27,7 @@
                                         "摄影/摄像/平面","教育/教学/参考","文化/艺术/收藏","文学/文摘/经典",
                                         "时事 /时政/新闻","时尚/服饰/美妆","校园/学习/辅导","母婴/亲子/育儿",
                                         "汽车/男士/品质","烹饪/美食/厨房","科普/科技/军事","财经/商业/管理","音乐/影视/广告"};
-        periodicCon = new List<string> { "周刊", "半月刊", "月刊", "双月刊", "季刊" };
+        periodicCon = new List<string> { "周刊", "双周刊", "旬刊", "半月刊", "月刊", "双月刊", "季刊" };
     }
 }
 <div class="ui large borderless fixed menu" id="top-nav" style="max-height:80px">
@@ -100,10 +101,16 @@
                         <span class="publisher">@item.Pdw</span>
                     </div>
                     <div class="price">
-                        全年定价：@item.Ppr
+                        全年定价：@item.Ppr 元
                     </div>
                     <div class="extra">
                         <div class="ui label">@item.Labels</div>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, item, CommonOperations.Update)).Succeeded)
+                         {
+                            <div class="extra content">
+                                <a asp-action="Edit" asp-route-id="@item.Pno_number">编辑</a>
+                            </div>
+                         }
                         <div class="ui right floated green button">
                             <a style="text-decoration:none;color:white;" asp-controller="Subscribe" asp-route-id="@item.Pno_number" asp-action="Create">
                                 现在订购

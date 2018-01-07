@@ -20,7 +20,8 @@ function searchKey(searchTerm) {
     
     $(document).keyup(function (event) {
         if (event.keyCode == 13) {
-            $(location).attr("href", "/Home/items?q=" + searchTerm+"&k="+getUrlParam('k'));
+            let k = getUrlParam('k');
+            $(location).attr("href", "/Home/items?q=" + searchTerm+"&k="+(getUrlParam('k')||'ALL'));
         }
     });
 }

@@ -1,6 +1,5 @@
 ﻿@using PostOfficeApp.Models;
 @model IDictionary<string,IEnumerable<Newspaper>>
-@using PostOfficeApp.Controllers;
 @using PostOfficeApp.Authorization;
 @{
     ViewData["Title"] = "Home Page";
@@ -75,15 +74,16 @@
                                 <div class="content">
                                     <div class="header">@news.Pna</div>
                                     <div class="meta">
-                                        <span class="price">价格:@news.Ppr</span>
+                                        <span class="price">价格:@news.Ppr 元/年</span>
                                         <span class="publish">出版社:@news.Pdw</span>
                                     </div>
                                     <div class="description">@news.Ptype</div>
                                 </div>
-                                @*if (await AuthorizationService.AuthorizeAsync(User,)*@
-                                <div class="extra content">
-                                    <a>编辑</a>
-                                </div>
+                                @if ((await AuthorizationService.AuthorizeAsync(User,news, CommonOperations.Update)).Succeeded){ 
+                                    <div class="extra content">
+                                        <a asp-action="Edit" asp-route-id="@news.Pno_number">编辑</a>
+                                    </div>
+                                }
                             </div>    
                         }
                     </div>

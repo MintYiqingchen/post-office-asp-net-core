@@ -31,7 +31,7 @@ app.controller('myFilter', function ($scope, $http) {
             $('#content-box>div[class*=' + temp[0] + ']').show();
         }
         for (let a in fm['periodic']) {
-            $('#content-box>div.' + fm['content'][a]).show();
+            $('#content-box>div.' + fm['periodic'][a]).show();
         }
     };
     $scope.deleteCondition = function (myEvent, kind) {
@@ -45,7 +45,7 @@ app.controller('myFilter', function ($scope, $http) {
                 $('#content-box>div[class*=' + temp[0] + ']').show();
             }
             for (let a in fm['periodic']) {
-                $('#content-box>div[class*=' + temp[0] + ']').show();
+                $('#content-box>div.' + fm['periodic'][a]).show();
             }
         }
         else {
