@@ -26,9 +26,6 @@ namespace PostOfficeApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionBuilder.UseMySQL(Configuration.GetConnectionString("MySQL"));
-            services.AddSingleton(optionBuilder.Options);*/
 
             services.AddDbContext<ApplicationDbContext>(options=>
                 options.UseMySQL(Configuration.GetConnectionString("MySQL")));
@@ -90,7 +87,7 @@ namespace PostOfficeApp
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            /*
+            
             // get manager seed passwd
             var testUserPw = Configuration["SeedUserPW"];
             if (string.IsNullOrEmpty(testUserPw))
@@ -116,7 +113,7 @@ namespace PostOfficeApp
             catch
             {
                 System.Console.WriteLine("seed database error");
-            }*/
+            }
             
         }
     }

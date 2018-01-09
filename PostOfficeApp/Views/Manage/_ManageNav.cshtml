@@ -7,8 +7,17 @@
 <ul class="nav nav-pills nav-stacked">
     <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">我的资料</a></li>
     <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">密码管理</a></li>
-    <li class="@ManageNavPages.AddressManage(ViewContext)"><a asp-action="">我的地址</a></li>
-    <li class="@ManageNavPages.MySubscription(ViewContext)"><a asp-action="">我的订单</a></li>
+    <li class="@ManageNavPages.MySubscription(ViewContext)">
+        @if (User.IsInRole("Client"))
+        {
+            <a asp-action="Item">我的订单</a>
+        }
+        else
+        {
+            <a asp-action="Item">所有订单</a>
+
+        }
+    </li>
     @*if (hasExternalLogins)
     {
         <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a asp-action="ExternalLogins">External logins</a></li>

@@ -1,21 +1,27 @@
 ﻿@model PostOfficeApp.Models.Newspaper
 
 @{
-    ViewData["Title"] = "编辑";
+    ViewData["Title"] = "创建新刊物";
 }
 <div class="container">
-    <form asp-action="Edit" class="ui form" accept-charset="UTF-8">
+    <form asp-action="Create" class="ui form" accept-charset="UTF-8">
         <div class="form-horizontal">
             <h4>报纸信息</h4>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Pno_number" />
+            <div class="field">
+                <label asp-for="Pno_number">发刊编号</label>
+                <input asp-for="Pno_number" />
+                <span asp-validation-for="Pno_number" class="text-danger"></span>
+                @if (ViewData.Keys.Contains("error"))
+                {
+                    <div class="item" style="color:orangered">@ViewData["error"]</div>
+                }
+            </div>
             <div class="field">
                 <label asp-for="Pna" class="col-md-2 control-label">刊物名称</label>
-                <div class="col-md-10">
-                    <input asp-for="Pna" class="form-control" />
-                    <span asp-validation-for="Pna" class="text-danger" />
-                </div>
+                <input asp-for="Pna" class="form-control" />
+                <span asp-validation-for="Pna" class="text-danger" />
             </div>
             <div class="field">
                 <label asp-for="Ppr" class="col-md-2 control-label">价格：</label>
@@ -32,14 +38,14 @@
                 </div>
             </div>
             <div class="field">
-                <label asp-for="Ptype" class="col-md-2 control-label"></label>
+                <label asp-for="Ptype" class="col-md-2 control-label">种类：</label>
                 <div class="col-md-10">
                     <input asp-for="Ptype" class="form-control" />
                     <span asp-validation-for="Ptype" class="text-danger" />
                 </div>
             </div>
             <div class="field">
-                <label asp-for="Pdw" class="col-md-2 control-label"></label>
+                <label asp-for="Pdw" class="col-md-2 control-label">出版社：</label>
                 <div class="col-md-10">
                     <input asp-for="Pdw" class="form-control" />
                     <span asp-validation-for="Pdw" class="text-danger" />
@@ -54,36 +60,13 @@
             </div>
             <div class="field">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="ui primary button" />
-                    <div class="ui red button">删除</div>
+                    <input type="submit" value="保存" class="ui primary button" />
                 </div>
             </div>
         </div>
     </form>
     <div style="padding-top:1em;">
         <a id="back" asp-action="Index" style="cursor:pointer;">返回首页</a>
-    </div>
-</div>
-<div class="ui basic modal">
-    <div class="ui icon header">
-        <i class="archive icon"></i>
-        删除刊物
-    </div>
-    <div class="ui centered text content">
-        <p>确定删除吗？</p>
-    </div>
-    <div class="actions">
-        <div class="ui grey basic cancel inverted button">
-            <i class="remove icon"></i>
-            取消
-        </div>
-        <form asp-action="Delete" accept-charset="UTF-8">
-            <input asp-for="Pno_number" type="hidden"/>
-            <button type="submit" class="ui red ok inverted button">
-                <i class="checkmark icon"></i>
-                确认删除
-            </button>
-        </form>
     </div>
 </div>
 
@@ -99,5 +82,3 @@
             .modal('show');
     });
 </script>
-
-

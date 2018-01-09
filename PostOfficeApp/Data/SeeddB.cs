@@ -14,8 +14,10 @@ namespace PostOfficeApp.Data
             // var adminID = await EnsureUser(serviceProvider, pw, "821244608@qq.com");
             // await EnsureRole(serviceProvider, adminID, Constants.AdministratorRole);
 
-            var uid = await EnsureUser(serviceProvider, pw, "manager@postoffice.com");
-            await EnsureRole(serviceProvider, uid, Constants.ManageRole);
+            //var uid = await EnsureUser(serviceProvider, pw, "manager@postoffice.com");
+            //await EnsureRole(serviceProvider, uid, Constants.ManageRole);
+            var uid = await EnsureUser(serviceProvider, "client", "client@postoffice.com");
+            await EnsureRole(serviceProvider, uid, Constants.ClientRole);
         }
 
         private static async Task<string> EnsureUser(IServiceProvider serviceProvider, string pw, string UserName)
@@ -41,6 +43,12 @@ namespace PostOfficeApp.Data
             }
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             var user = await userManager.FindByIdAsync(uid);
+            // admin can not be a client
+            if (await userManager.IsInRoleAsync(user,Constants.ClientRole) 
+                && role.Equals(Constants.AdministratorRole))
+            {
+                await userManager.RemoveFromRoleAsync(user, Constants.ClientRole);
+            }
             ir = await userManager.AddToRoleAsync(user, role);
 
             return ir;

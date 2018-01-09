@@ -28,20 +28,53 @@ namespace PostOfficeApp.Controllers
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
+        private readonly OrdersDbContext _context2;
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder, OrdersDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context2 = context;
         }
 
+        public async Task<ActionResult> Item(string orderpri)
+        {
+            orderpri = String.IsNullOrEmpty(orderpri) ? "time" : orderpri;
+            var Orders_list = new List<Orders>();
+
+            string userName = HttpContext.User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(userName);
+            var uid = user.Id;
+            IQueryable<Orders> query;
+            if (HttpContext.User.IsInRole(Constants.AdministratorRole))
+            {
+                query = from rows in _context2.Orders
+                            select rows;
+            }
+            else
+            {
+                query = from rows in _context2.Orders
+                            where rows.Opeople.Equals(uid)
+                            select rows;
+            }
+            if (orderpri.Equals("price"))
+            {
+                Orders_list = query.OrderByDescending(c => c.Oprice).ToList();
+            }
+            else
+            {
+                Orders_list = query.OrderByDescending(c => c.Onumber).ToList();
+            }
+            ViewData["orderlist"] = Orders_list;
+            return View(new Orders());
+        }
         [TempData]
         public string StatusMessage { get; set; }
 

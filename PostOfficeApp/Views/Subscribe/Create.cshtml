@@ -1,4 +1,4 @@
-﻿@model Tuple<Newspaper,Orders>
+﻿@model OrdersViewModel
 @{
     ViewData["Title"] = "订购";
     var item = Model.Item1;
@@ -9,8 +9,8 @@
         <span class="ui left header">返回</span>
     </div>
 </div>
-<div class="container">
-    <div class="ui basic segment">
+<div class="container" ng-app="myApp" ng-controller="myController">
+    <div class="ui piled segment">
         <div class="ui items">
             <div class="item">
                 <div class="ui tiny image">
@@ -21,8 +21,8 @@
                     <div class="meta">
                         <span class="publisher">@item.Pdw</span>
                     </div>
-                    <div class="price">
-                        全年定价：@item.Ppr 元
+                    <div>
+                        全年定价：<span id="price">@item.Ppr</span> 元
                     </div>
                 </div>
             </div>
@@ -30,11 +30,11 @@
     </div>
     <div class="ui basic segment">
         <h2>下订单</h2>
-        <form method="post" asp-action="subscribe" class="ui form">
+        <form method="post" asp-action="Create" class="ui form">
             <h4 class="ui dividing header">订购详情</h4>
             <div class="field">
                 <label asp-for="Item2.Ofen">订购数量：</label>
-                <input type="number" asp-for="Item2.Ofen" value="1" />
+                <input ng-model="fen" ng-change="changeTotal()" type="number" asp-for="Item2.Ofen" min="1" max="999" />
                 <span asp-validation-for="Item2.Ofen" class="text-danger"></span>
             </div>
             <h4 class="ui dividing header">寄送信息</h4>
@@ -49,19 +49,39 @@
                 <span asp-validation-for="Item2.Gte" class="text-danger"></span>
             </div>
             <div class="field">
+                <label asp-for="Item2.Gpo">邮政编码：</label>
+                <input asp-for="Item2.Gpo" required />
+                <span asp-validation-for="Item2.Gpo" class="text-danger"></span>
+            </div>
+            <div class="field">
                 <label asp-for="Item2.Oaddress">寄送地址：</label>
                 <input asp-for="Item2.Oaddress" required />
                 <span asp-validation-for="Item2.Oaddress" class="text-danger"></span>
             </div>
-            <button class="ui button" type="submit">提交订单</button>
+            <div>
+                <button class="ui button" type="submit">提交订单</button>
+                <span id="total-price" style="padding:2rem">
+                    共需支付 {{total}} 元
+                </span>
+            </div>
+
         </form>
     </div>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/semantic.min.js"></script>
+<script src="~/lib/angular.js"></script>
 <script>
     $('#backtag').click(function () { history.back(); });
+    var app = angular.module("myApp", []);
+    app.controller("myController", function ($scope) {
+        let price = $('#price').text();
+        $scope.total = $('#price').text();
+        $scope.changeTotal = function () {
+            $scope.total = $scope.fen * price;
+        }
+    })
 </script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

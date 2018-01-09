@@ -1,0 +1,101 @@
+﻿@model Orders
+@{
+    ViewData["Title"] = "Item";
+    ViewData.AddActivePage(ManageNavPages.MySub);
+    var orderlist = (List<Orders>)ViewData["orderlist"];
+}
+
+<table class="ui cell table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Item" asp-route-orderpri="time">订单号</a>
+            </th>
+            <th>
+                发行刊号
+            </th>
+            <th>
+                用户编号
+            </th>
+            <th>
+                <a asp-action="Item" asp-route-orderpri="price">订单价格</a>
+            </th>
+            <th>
+                送货地址
+            </th>
+            <th>
+                联系电话
+            </th>
+            <th>
+                收货人
+            </th>
+            <th>
+                是否支付
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in orderlist)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Onumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ona)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opeople)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Oprice)
+                </td>
+                <td>
+                    @item.Oaddress
+                </td>
+                <td>
+                    @item.Gte
+                </td>
+                <td>
+                    @item.Gna
+                </td>
+                <td>
+                    @if (item.Boolpay==2)
+                    {
+                        <span>已支付</span>
+                    }
+                    else if(item.Boolpay==0 && User.IsInRole("Client"))
+                    {
+                        <form asp-controller="Subscribe" asp-action="Pay" method="post">
+                            <input type="hidden" value="@item.Onumber" asp-for="Onumber"/>
+                            <button type="submit" class="ui small teal button">现在支付</button>
+                        </form>
+                    }
+                    else if(item.Boolpay==1 && User.IsInRole("Client"))
+                    {
+                        <span>已支付，等待确认</span>
+
+                    }
+                    else if(item.Boolpay==1 && User.IsInRole("Admin"))
+                    {
+                        <form asp-controller="Subscribe" asp-action="PayConfirm" method="post">
+                            <input type="hidden" value="@item.Onumber" asp-for="Onumber"/>
+                            <button type="submit" class="ui small primary button">确认订单</button>
+                        </form>
+                    }else if(item.Boolpay==0 && User.IsInRole("Admin")){
+                        <span>等待用户支付</span>
+
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/semantic.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

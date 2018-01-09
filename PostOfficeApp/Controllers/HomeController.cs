@@ -84,6 +84,70 @@ namespace PostOfficeApp.Controllers
             var editModel = Model_to_viewModel(newspaper);
             return View(editModel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(string id, [Bind("Pno_number,Pna,Ppr,Labels,Ptype,Pdw,Img_url")] Newspaper newspaper)
+        {
+            Console.WriteLine($"{id},{newspaper.Pno_number}");
+            if (!id.Equals(newspaper.Pno_number))
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context2.Update(newspaper);
+                    await _context2.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                    
+                }
+            }
+            return RedirectToAction("Edit", 
+                new { id = System.Web.HttpUtility.UrlEncode(newspaper.Pno_number,System.Text.Encoding.UTF8) });
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles ="Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed([Bind("Pno_number")]Newspaper newspaper) 
+        {
+            newspaper = await _context2.Newspaper.SingleOrDefaultAsync(m => m.Pno_number == newspaper.Pno_number);
+            _context2.Newspaper.Remove(newspaper);
+            await _context2.SaveChangesAsync();
+            return RedirectToAction("Items");
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Create([Bind("Pno_number,Pna,Ppr,Labels,Ptype,Pdw,Img_url")] Newspaper newspaper)
+        {
+            if (_context2.Newspaper.
+                Where(c=>c.Pno_number==newspaper.Pno_number).ToList().Count()!=0)
+            {
+                ViewData["error"] = "发刊号码已存在！";
+            }
+            else if (ModelState.IsValid)
+            {
+                newspaper.Total_sell_out = 0;
+                _context2.Add(newspaper);
+                await _context2.SaveChangesAsync();
+                return RedirectToAction("Items");
+            }
+            return View(newspaper);
+        }
+
         [Route("/Home/search")]
         public JsonResult Search(string q="")
         {
@@ -210,12 +274,20 @@ namespace PostOfficeApp.Controllers
             return new JsonResult(returnContent);
         }
         [Route("/Home/items")]
-        public async Task<ActionResult> Items(string q="",string k="ALL")
+        public async Task<ActionResult> Items(string q,string k)
         {
             /* @usage：重定向到条目网页
              * @q:搜索关键词
              * @k:见KIND定义
              */
+            if (String.IsNullOrEmpty(q))
+            {
+                q = "";
+            }
+            if (string.IsNullOrEmpty(k))
+            {
+                k = "ALL";
+            }
             string[] keys = q.ToLower().Split(' ');
             string str_kind = k.ToString();
             var newspaper_list = new List<Newspaper>();

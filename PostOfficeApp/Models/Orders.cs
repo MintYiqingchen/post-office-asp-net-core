@@ -12,26 +12,28 @@ namespace PostOfficeApp.Models
     {
         [Key]
         public string Onumber { get; set; }
-        public string Ona { get; set; }
-        [Range(1,999)]
+        public string Ona { get; set; }//报纸名称
+
+        [Required]
         public int Ofen { get; set; }
         public string Opeople { get; set; }
         
         // 配送信息
+        [Required]
         public string Oaddress { get; set; }
-        [StringLength(maximumLength:6,ErrorMessage ="请输入正确的邮政编码",MinimumLength =6)]
         public string Gpo { get; set; }
         [Required]
-        public string Gna { get; set; }
-        [Phone(ErrorMessage ="请输入有效联系电话")]
+        public string Gna { get; set; }//订购姓名
+        [Required]
+        [Phone]
         public string Gte { get; set; }
 
-        
         public int Ostart_year { get; set; }
         public float Oprice { get; set; }
         public int Last_time { get; set; }
-        public int Pay_way { get; set; }
-        public bool Boolpay { get; set; }
+        public int Payway { get; set; }
+        // 0:wei 1:yi wei 2:yi
+        public int Boolpay { get; set; }
     }
     public class OrdersDbContext : DbContext
     {
@@ -39,5 +41,10 @@ namespace PostOfficeApp.Models
         {
         }
         public DbSet<Orders> Orders { get; set; }
+    }
+    public class OrdersViewModel
+    {
+        public Newspaper Item1 { get; set; }
+        public Orders Item2 { get; set; }
     }
 }

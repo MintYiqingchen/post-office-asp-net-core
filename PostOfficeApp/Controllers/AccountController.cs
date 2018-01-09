@@ -232,6 +232,8 @@ namespace PostOfficeApp.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+                    // set as client role
+                    await _userManager.AddToRoleAsync(user, "Client");
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -460,5 +462,6 @@ namespace PostOfficeApp.Controllers
         }
 
         #endregion
+
     }
 }
