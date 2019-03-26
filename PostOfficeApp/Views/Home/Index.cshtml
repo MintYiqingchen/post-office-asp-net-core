@@ -69,7 +69,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img src="@news.Img_url" />
+                                    @if (news.Img_url != "")
+                                    {
+                                        <img src="@news.Img_url" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/banner2.svg" />
+
+                                    }
+
                                 </div>
                                 <div class="content">
                                     <div class="header">@news.Pna</div>

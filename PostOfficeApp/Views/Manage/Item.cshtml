@@ -60,7 +60,7 @@
                     @item.Gna
                 </td>
                 <td>
-                    @if (item.Boolpay==2)
+                    @if (item.Boolpay==1)
                     {
                         <span>已支付</span>
                     }
@@ -69,18 +69,6 @@
                         <form asp-controller="Subscribe" asp-action="Pay" method="post">
                             <input type="hidden" value="@item.Onumber" asp-for="Onumber"/>
                             <button type="submit" class="ui small teal button">现在支付</button>
-                        </form>
-                    }
-                    else if(item.Boolpay==1 && User.IsInRole("Client"))
-                    {
-                        <span>已支付，等待确认</span>
-
-                    }
-                    else if(item.Boolpay==1 && User.IsInRole("Admin"))
-                    {
-                        <form asp-controller="Subscribe" asp-action="PayConfirm" method="post">
-                            <input type="hidden" value="@item.Onumber" asp-for="Onumber"/>
-                            <button type="submit" class="ui small primary button">确认订单</button>
                         </form>
                     }else if(item.Boolpay==0 && User.IsInRole("Admin")){
                         <span>等待用户支付</span>

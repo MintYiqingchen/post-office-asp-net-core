@@ -53,6 +53,7 @@ namespace PostOfficeApp.Controllers
             var user = await _userManager.FindByNameAsync(userName);
             var uid = user.Id;
             IQueryable<Orders> query;
+            _context2.SaveChanges();
             if (HttpContext.User.IsInRole(Constants.AdministratorRole))
             {
                 query = from rows in _context2.Orders

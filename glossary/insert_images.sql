@@ -1,5 +1,5 @@
 use postoffice;
-/*
+
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-106/20151110172729_1.jpg' where newspaper.pna like '中国劳动保障报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-112/20151110170909_1.jpg' where newspaper.pna like '中国纺织报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-141/20151110171031_1.jpg' where newspaper.pna like '中国气象报';
@@ -20,10 +20,7 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/3/3-77/20151215172533_5.jpg' where newspaper.pna like '上海东方体育日报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/37/37-88/20151215172711_1.jpg' where newspaper.pna like '围棋报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/37/37-91/20151215173558_1.jpg' where newspaper.pna like '围棋报.弈趣少儿围棋';
-*/
 
-
-/*
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/45/45-133/20151215173220_1.jpg' where newspaper.pna like '篮球先锋报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/45/45-15/20151215172850_1.jpg' where newspaper.pna like '足球';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/45/45-35/20151215173824_1.jpg' where newspaper.pna like '羊城体育报';
@@ -46,8 +43,6 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/27/
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/23/23-232/20110214151254_1.jpg' where newspaper.pna like '青岛财经日报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/17/17-4/20171208145947_1.jpg' where newspaper.pna like '河北经济日报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/11/11-77/20151215181041_1.jpg' where newspaper.pna like '今日财富报';
-*/
-/*
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/7/7-256/20171017092734_1.jpg' where newspaper.pna like '朝阳广播电视报代投版';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-124/20151209163732_1.jpg' where newspaper.pna like '金融时报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-175/20160715162915_1.jpg' where newspaper.pna like '中国证券报';
@@ -83,8 +78,7 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-319/5037.jpg' where newspaper.pna like '英语学习辅导报.高一综合(课标全国)';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-320/5055.jpg' where newspaper.pna like '英语学习辅导报.高二综合(课标全国)';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-321/5080.jpg' where newspaper.pna like '英语学习辅导报.高三综合(课标全国)';
-*/
-/*
+
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-324/5278.jpg' where newspaper.pna like '英语学习辅导报.大学版';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-332/20171227165752_1.jpg' where newspaper.pna like '21世纪英文报.英语教育报（中英文版）';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-335/20160816093350_3.jpg' where newspaper.pna like '中国儿童画报';
@@ -116,8 +110,7 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/25/
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/26/26-11/20091105093145_1.jpg' where newspaper.pna like '茶业通报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/27/27-5/6844.jpg' where newspaper.pna like '江苏农业科技报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/3/3-24/20130708101918_4.jpg' where newspaper.pna like '东方城乡报';
-*/
-/*
+
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/31/31-25/20151102161632_1.jpg' where newspaper.pna like '浙江法制报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/31/31-31/4007.jpg' where newspaper.pna like '农村信息报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/33/33-12/20151102163352_1.jpg' where newspaper.pna like '福建法治报';
@@ -153,8 +146,7 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/pub/img/no_photo
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/12/12-26/20111115165227_1.jpg' where newspaper.pna like '劳动保障世界';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-416/1294.jpg' where newspaper.pna like '职业';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-866/20141031141800_1.jpg' where newspaper.pna like '《国企管理》';
-*/
-/*
+
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-918/20161024112354_1.jpg' where newspaper.pna like '今日中国（含手机客户端）';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-919/20161024112505_1.jpg' where newspaper.pna like '今日中国（英文版）（含手机客户端）';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-926/20161024112709_1.jpg' where newspaper.pna like '今日中国（西班牙文）（含手机客户端）';
@@ -246,7 +238,6 @@ update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/16/
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/18/18-104/3465.jpg' where newspaper.pna like '医学理论与实践';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/1/1-171/20170911152410_2.jpg' where newspaper.pna like '中国美术报';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/16/16-289/20160527174534_1.jpg' where newspaper.pna like '意林-全彩Golor';
-*/
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/16/16-4/4653.jpg' where newspaper.pna like '内蒙古画报（蒙、汉）';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-156/20160526091708_1.jpg' where newspaper.pna like '儿童文学（经典版）';
 update newspaper set newspaper.img_url = 'http://bk.11185.cn:80/media/upload/2/2-551/20170926162534_1.jpg' where newspaper.pna like '幼儿画报';
